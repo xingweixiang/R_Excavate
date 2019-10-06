@@ -224,4 +224,4 @@ pie3D(x,labels = lbl,explode = 0.1, main = "出生年龄段 - 饼状图")
 # Save the file.
 dev.off()
 ```
-![图](/code/img/3/plotrix.png)
+![图](/code/img/3/3d_pie_chart.png)
