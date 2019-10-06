@@ -20,6 +20,7 @@ R语言数据分析与挖掘
 		* [3、直方图](#3直方图)
 		* [4、线形图](#4线形图)
 		* [5、散点图](#5散点图)
+		* [6、饼状图](#6饼状图)
 ### 一、R的基本数据结构
 ### 1、向量
 - 向量对象有六种数据类型的原子向量，其他R对象是建立在原子向量之上的。六类向量类型包括逻辑、数字值、整数、复数、字符、原生<br>
@@ -148,3 +149,79 @@ barplot(H,names.arg = M,xlab = "月份",ylab = "收入量",col = "green",
 dev.off()
 ```
 ![图](/code/img/3/barchart.png)
+### 2、箱形图
+- R中的箱形图通过使用boxplot()函数来创建，表示数据集中的最小值，最大值，中值，第一四分位数和第四四分位数。 通过为每个数据集绘制箱形图，比较数据集中的数据分布也很有用。
+```
+setwd("H:/R_Excavate/code/img/3")
+png(file = "boxplot.png")
+# Plot the chart.
+boxplot(mpg ~ cyl, data = mtcars, 
+        xlab = "气缸数",
+        ylab = "每加仑里程", 
+        main = "里程数据",
+        notch = TRUE, 
+        varwidth = TRUE, 
+        col = c("blue","green","red"),
+        names = c("高","中","低")
+)
+# Save the file.
+dev.off()
+```
+![图](/code/img/3/boxplot.png)
+### 3、直方图
+- R使用hist()函数创建直方图。 该函数将一个向量作为输入，并使用一些更多的参数绘制直方图。
+```
+setwd("H:/R_Excavate/code/img/3")
+v <- c(9,13,21,8,36,22,12,41,31,33,19)
+# Give the chart file a name.
+png(file = "histogram.png")
+# Create the histogram.
+hist(v, main="直方图示例-2", xlab = "重量", ylab="高度",col = "blue",border = "red", xlim = c(0,40), ylim = c(0,5),
+   breaks = 5)
+# Save the file.
+dev.off()
+```
+![图](/code/img/3/histogram.png)
+### 4、线形图
+- R中通过使用plot()函数来创建线形图，可以使用lines()函数在同一个图表上绘制多个直接。
+```
+setwd("H:/R_Excavate/code/img/3")
+# Create the data for the chart.
+v <- c(7,12,28,3,41)
+t <- c(14,7,6,19,3)
+# Give the chart file a name.
+png(file = "line_chart.png")
+# Plot the bar chart.
+plot(v,type = "o",col = "red", xlab = "月份", ylab = "降雨量", 
+     main = "降雨量图表")
+lines(t, type = "o", col = "blue")
+# Save the file.
+dev.off()
+```
+![图](/code/img/3/line_chart.png)
+### 5、散点图
+- R中简单散点图使用plot()函数来创建，可通过使用pairs()函数来创建散点图的矩阵。
+```
+setwd("H:/R_Excavate/code/img/3")
+png(file = "scatterplot.png")
+pairs(~wt+mpg+disp+cyl,data = mtcars,main = "散点图矩阵")
+# Save the file.
+dev.off()
+```
+![图](/code/img/3/scatterplot.png)
+### 6、饼状图
+- 在R中，使用将正数作为向量输入的pie()函数创建饼状图。附加参数用于控制标签，颜色，标题等。可以使用附加包来绘制具有3个维度的饼图。软件包plotrix中有一个名为pie3D()的函数，用于此效果
+```
+setwd("H:/R_Excavate/code/img/3")
+library("plotrix")
+# Create data for the graph.
+x <-  c(21, 62, 10,53)
+lbl <- c("70后", "80后", "90后", "00后")
+# Give the chart file a name.
+png(file = "3d_pie_chart.jpg")
+# Plot the chart.
+pie3D(x,labels = lbl,explode = 0.1, main = "出生年龄段 - 饼状图")
+# Save the file.
+dev.off()
+```
+![图](/code/img/3/plotrix.png)
