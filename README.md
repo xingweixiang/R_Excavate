@@ -21,6 +21,9 @@ R语言数据分析与挖掘
 		* [4、线形图](#4线形图)
 		* [5、散点图](#5散点图)
 		* [6、饼状图](#6饼状图)
+	* [四、数据分析](#四数据分析)
+		* [1、回归分析](#1回归分析)
+		* [2、决策树分析](#2决策树分析)
 ### 一、R的基本数据结构
 ### 1、向量
 - 向量对象有六种数据类型的原子向量，其他R对象是建立在原子向量之上的。六类向量类型包括逻辑、数字值、整数、复数、字符、原生<br>
@@ -225,3 +228,44 @@ pie3D(x,labels = lbl,explode = 0.1, main = "出生年龄段 - 饼状图")
 dev.off()
 ```
 ![图](/code/img/3/3d_pie_chart.jpg)
+### 与四、数据分析
+### 1、回归分析
+- 回归分析用于建立两个变量之间的关系模型。 这些变量之一称为预测变量，其值通过实验收集。 另一个变量称为响应变量，其值来自预测变量。<br>
+lm()函数创建预测变量与响应变量之间的关系模型
+- 线性回归例子：根据一个人的已知身高来预测人的体重
+```
+setwd("H:/R_Excavate/code/img/4")
+x <- c(151, 174, 138, 186, 128, 136, 179, 163, 152, 131)
+y <- c(63, 81, 56, 91, 47, 57, 76, 72, 62, 48)
+relation <- lm(y~x)
+# Give the chart file a name.
+png(file = "linearregression.png")
+# Plot the chart.
+plot(y,x,col = "blue",main = "身高和体重回归",
+     abline(lm(x~y)),cex = 1.3,pch = 16,xlab = "体重(Kg)",ylab = "身高(cm)")
+# Save the file.
+dev.off()
+```
+![图](/code/img/4/linearregression.png)
+### 2、决策树分析
+- 决策树是以树的形式表示选择及其结果的图形。图中的节点表示事件或选择，并且图形的边缘表示决策规则或条件。它主要用于使用R的机器学习和数据挖掘应用程序<br>
+- 决策的例子：将接收的邮件预测是否为垃圾邮件，根据这些信息中的因素，预测肿瘤是癌症或预测贷款作为良好或不良的信用风险。
+- 使用ctree()函数创建决策树并查看其生成的图表
+```
+#install.packages("party")
+setwd("H:/Workspaces/pycharm/R_Excavate/code/img/4")
+library(party)
+# Create the input data frame.
+input.dat <- readingSkills[c(1:102),]
+# Give the chart file a name.
+png(file = "decision_tree.png")
+# Create the tree.
+output.tree <- ctree(
+  nativeSpeaker ~ age + shoeSize + score, 
+  data = input.dat)
+# Plot the tree.
+plot(output.tree)
+# Save the file.
+dev.off()
+```
+![图](/code/img/4/decision_tree.png)
