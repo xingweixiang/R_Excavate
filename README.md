@@ -24,6 +24,10 @@ R语言数据分析与挖掘
 	* [四、数据分析](#四数据分析)
 		* [1、回归分析](#1回归分析)
 		* [2、决策树分析](#2决策树分析)
+		* [3、支持向量机SVM](#3支持向量机SVM)
+		* [4、随机森林算法](#4随机森林算法)
+		* [5、时间序列分析](#5时间序列分析)
+		* [6、卡方检验](#6卡方检验)
 ### 一、R的基本数据结构
 ### 1、向量
 - 向量对象有六种数据类型的原子向量，其他R对象是建立在原子向量之上的。六类向量类型包括逻辑、数字值、整数、复数、字符、原生<br>
@@ -269,3 +273,75 @@ plot(output.tree)
 dev.off()
 ```
 ![图](/code/img/4/decision_tree.png)
+### 3、支持向量机SVM
+- 支持向量机(SVM)是一种线性和非线性数据的分类方法，支持向量机可用于回归、分类和异常检验，前者即为支持向量机回归，后者为支持向量机分类。<br>
+- 支持向量机的例子：手写数字识别、对象识别、演说人识别，以及基准时间序列预测检验。
+- 使用kernlab包创建支持向量机
+```
+library(kernlab)
+irismodel <- ksvm(Species ~ ., data = iris,              
+                  type = "C-bsvc", kernel = "rbfdot",                    
+                  kpar = list(sigma = 0.1), C = 10,                    
+                  prob.model = TRUE)
+irismodel
+predict(irismodel, iris[c(3, 10, 56, 68, 107, 120), -5], type = "probabilities")
+```
+![图](/code/img/4/svm.png)
+### 4、随机森林算法
+- 随机森林拥有广泛的应用前景，从市场营销到医疗保健保险，既可以用来做市场营销模拟的建模，统计客户来源，保留和流失，也可用来预测疾病的风险和病患者的易感性。<br>
+```
+library(party)
+library(randomForest)
+# Create the forest.
+output.forest <- randomForest(nativeSpeaker ~ age + shoeSize + score,data = readingSkills)
+# View the forest results.
+print(output.forest) 
+```
+![图](/code/img/4/randomForest.png)
+结论：从上面显示的可以得出结论，鞋码和成绩是决定如果某人是母语者或不是母语的重要因素。 此外，该模型只有1%的误差，这意味着我们可以预测精度为99%。
+### 5、时间序列分析
+- 时间序列分析是定量预测方法之一。它包括一般统计分析(如自相关分析，谱分析等)，统计模型的建立与推断，以及关于时间序列的最优预测、控制与滤波等内容<br>
+- 多时间序列：通过将两个系列组合成一个矩阵，在一个图表中绘制多个时间序列
+```
+setwd("H:/Workspaces/pycharm/R_Excavate/code/img/4")
+rainfall1 <- c(799,1174.8,865.1,1334.6,635.4,918.5,685.5,998.6,784.2,985,882.8,1071)
+rainfall2 <- 
+  c(655,1306.9,1323.4,1172.2,562.2,824,822.4,1265.5,799.6,1105.6,1106.7,1337.8)
+# Convert them to a matrix.
+combined.rainfall <-  matrix(c(rainfall1,rainfall2),nrow = 12)
+# Convert it to a time series object.
+rainfall.timeseries <- ts(combined.rainfall,start = c(2012,1),frequency = 12)
+# Print the timeseries data.
+print(rainfall.timeseries)
+# Give the chart file a name.
+png(file = "rainfall_combined.png")
+# Plot a graph of the time series.
+plot(rainfall.timeseries, main = "Multiple Time Series")
+# Save the file.
+dev.off()
+```
+![图](/code/img/4/rainfall_combined.png)
+### 6、卡方检验
+- 卡方检验是一种确定两个分类变量之间是否存在显着相关性的统计方法。 这两个变量应该来自相同的人口，他们应该是类似 - 是/否，男/女，红/绿等<br>
+- 用于执行卡方检验的函数是chisq.test()。
+- 实例：在“MASS”图书馆中获取Cars93数据，该图书馆代表1993年不同型号汽车的销售额，找出所售的汽车类型和安全气囊类型之间的任何显着的相关性
+```
+setwd("H:/Workspaces/pycharm/R_Excavate/code/img/4")
+rainfall1 <- c(799,1174.8,865.1,1334.6,635.4,918.5,685.5,998.6,784.2,985,882.8,1071)
+rainfall2 <- 
+  c(655,1306.9,1323.4,1172.2,562.2,824,822.4,1265.5,799.6,1105.6,1106.7,1337.8)
+# Convert them to a matrix.
+combined.rainfall <-  matrix(c(rainfall1,rainfall2),nrow = 12)
+# Convert it to a time series object.
+rainfall.timeseries <- ts(combined.rainfall,start = c(2012,1),frequency = 12)
+# Print the timeseries data.
+print(rainfall.timeseries)
+# Give the chart file a name.
+png(file = "rainfall_combined.png")
+# Plot a graph of the time series.
+plot(rainfall.timeseries, main = "Multiple Time Series")
+# Save the file.
+dev.off()
+```
+![图](/code/img/4/car.png)
+结论：结果显示p值小于0.05，这表明字符串相关
