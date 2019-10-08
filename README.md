@@ -28,6 +28,7 @@ R语言数据分析与挖掘
 		* [4、随机森林算法](#4随机森林算法)
 		* [5、时间序列分析](#5时间序列分析)
 		* [6、卡方检验](#6卡方检验)
+		* [7、聚类分析](#7聚类分析)
 ### 一、R的基本数据结构
 ### 1、向量
 - 向量对象有六种数据类型的原子向量，其他R对象是建立在原子向量之上的。六类向量类型包括逻辑、数字值、整数、复数、字符、原生<br>
@@ -297,7 +298,7 @@ output.forest <- randomForest(nativeSpeaker ~ age + shoeSize + score,data = read
 # View the forest results.
 print(output.forest) 
 ```
-![图](/code/img/4/randomForest.png)
+![图](/code/img/4/randomForest.png)<br>
 结论：从上面显示的可以得出结论，鞋码和成绩是决定如果某人是母语者或不是母语的重要因素。 此外，该模型只有1%的误差，这意味着我们可以预测精度为99%。
 ### 5、时间序列分析
 - 时间序列分析是定量预测方法之一。它包括一般统计分析(如自相关分析，谱分析等)，统计模型的建立与推断，以及关于时间序列的最优预测、控制与滤波等内容<br>
@@ -343,5 +344,38 @@ plot(rainfall.timeseries, main = "Multiple Time Series")
 # Save the file.
 dev.off()
 ```
-![图](/code/img/4/car.png)
+![图](/code/img/4/car.png)<br>
 结论：结果显示p值小于0.05，这表明字符串相关
+### 7、聚类分析
+- 聚类分析，对样品或指标进行分类的一种分析方法，依据样本和指标已知特性进行分类。
+- 实例：现有5个样本，每个样本只有一个指标，分别为1，2，6，8，11，样本间的距离选用Euclide距离，用最短距离法，最长距离法等进行聚类分析，画出相应的树状图。
+```
+# 数据读取
+x<-c(1,2,6,8,11)
+# 定义矩阵
+dim(x)<-c(5,1)
+#计算距离
+d<-dist(x)
+#聚类分析
+hc1<-hclust(d, "single")
+hc2<-hclust(d, "complete")
+hc3<-hclust(d, "median")
+hc4<-hclust(d, "mcquitty")
+#绘图分栏
+par(mfrow = c(2, 2))
+#绘图
+plot(hc1,hang=-1)
+plot(hc2,hang=-1)
+plot(hc3,hang=-1)
+plot(hc4,hang=-1)
+par(opar)
+#演示plot的用法
+dend1<-as.dendrogram(hc1)
+opar <- par(mfrow = c(2, 2),mar = c(4,3,1,2))
+plot(dend1)
+plot(dend1, nodePar=list(pch = c(1,NA), cex=0.8, lab.cex=0.8), type = "t", center=TRUE)
+plot(dend1, edgePar=list(col = 1:2, lty = 2:3), dLeaf=1, edge.root = TRUE)
+plot(dend1, nodePar=list(pch = 2:1, cex=.4*2:1, col=2:3), horiz=TRUE)
+par(opar)
+```
+![图](/code/img/4/cluster.png)<br>
