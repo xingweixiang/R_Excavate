@@ -29,6 +29,9 @@ R语言数据分析与挖掘
 		* [5、时间序列分析](#5时间序列分析)
 		* [6、卡方检验](#6卡方检验)
 		* [7、聚类分析](#7聚类分析)
+	* [五、R语言web开发框架](#五R语言web开发框架)
+	    * [1、shiny](#1shiny)
+	    * [2、FastRWeb](#2FastRWeb)
 ### 一、R的基本数据结构
 ### 1、向量
 - 向量对象有六种数据类型的原子向量，其他R对象是建立在原子向量之上的。六类向量类型包括逻辑、数字值、整数、复数、字符、原生<br>
@@ -233,7 +236,7 @@ pie3D(x,labels = lbl,explode = 0.1, main = "出生年龄段 - 饼状图")
 dev.off()
 ```
 ![图](/code/img/3/3d_pie_chart.jpg)
-### 与四、数据分析
+### 四、数据分析
 ### 1、回归分析
 - 回归分析用于建立两个变量之间的关系模型。 这些变量之一称为预测变量，其值通过实验收集。 另一个变量称为响应变量，其值来自预测变量。<br>
 lm()函数创建预测变量与响应变量之间的关系模型
@@ -378,4 +381,38 @@ plot(dend1, edgePar=list(col = 1:2, lty = 2:3), dLeaf=1, edge.root = TRUE)
 plot(dend1, nodePar=list(pch = 2:1, cex=.4*2:1, col=2:3), horiz=TRUE)
 par(opar)
 ```
-![图](/code/img/4/cluster.png)<br>
+![图](/code/img/4/cluster.png)
+### 五、R语言web开发框架
+R如果可以运行在Server端，把结果以Web的方式发布！这才是互联网的工作方式！
+### 1、shiny
+- Shiny是R中的一种Web开发框架，使得R的使用者不必太了解css、js只需要了解一些html的知识就可以快速完成web开发，且shiny包集成了bootstrap、jquery、ajax等特性，极大解放了作为统计语言的R的生产力。<br>
+Shiny应用包含连个基本的组成部分：一个是用户界面脚本（a user-interface script），另一个是服务器脚本(a server script)<br>
+- 你可以在一个目录中保存一个ui.R文件和server.R文件来创建一个Shiny应用。运行应用的方法是在函数runApp中置入目录名称。例如你的应用目录名称为myapp,且放在D盘目录下，那么键入以下代码可以执行应用：
+```
+library(shiny)
+runApp("D:/myapp")
+```
+也可以将ui和server代码写在一个脚本内，通过shinyApp执行该app。运行以下脚本将得到一个简单的web版直方图。
+```
+library(shiny)
+ui <- fluidPage(
+numericInput(inputId = "n",
+"Sample size", value = 68),
+plotOutput(outputId = "hist")
+)
+server <- function(input, output) {
+output$hist <- renderPlot({
+hist(rnorm(input$n))
+})
+}
+shinyApp(ui = ui, server = server)
+```
+![图](/code/img/4/5-1.png)
+- shinydashboard扩展包为shiny框架提供了BI框架，一个dashboard由三部分组成：标题栏、侧边栏、主面板。
+### 2、FastRWeb
+- FastRWeb 是一个基础架构环境, 可以让R脚本运行在任何WebServer上，展示数据和图形。用户通过URL地址与R脚本进行通信交互。 <br>
+FastRWeb 可以快速地构建一个R的Web环境，FastRWeb 底层依赖于CGI程序，也就是说，只要能支持CGI程序的WebServer，就可以运行FastRWeb。<br>
+1） 浏览器通过http请求访问Web服务器<br>
+2） Web服务器通过socket，把请求发给Rserve服务器<br>
+3） Rserve调用FastRWeb环境，运行R的脚本，返回数据和图片<br>
+4） 浏览器，得到结果，并在web上展示
